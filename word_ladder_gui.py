@@ -3,37 +3,25 @@ from collections import deque
 def dictionary(file_path, length=None):
     words = []
 
-  #هنا حطينا  try عشان ن handle ال Errors
     try:
-  #لو الملف موجود هيكمل عادي باقي الكود
      with open(file_path, 'r') as file:
-
-      #دي لوب هتمر علي الملف كله لو في ايرور هتطلع الايرور ف انهو سطر بالظبط
          for line_num, line in enumerate(file, 1):
-
-          # لو في سطر فاضي في الملف بتاع الكلمات
              if not line.strip():
                  print(f"Warning: Empty line at line {line_num}. Skipping...")
                  continue
-
-          #هنا هيشوف لو اليوزر دخل حاجه مش String
+                 
              if line is None or not isinstance(line, str):
                  print(f"Warning: Invalid input at line {line_num}. Skipping...")
                  continue
 
-             # هنحذف اي مسافات في الكلمه نفسها
-             # هنحذف اي مسافات في السطر
-            # هنحول الحروف كلها ل lower
              word = line.strip().replace("\t", "").replace(" ", "").lower()
 
-             #بيتأكد إن الكلمة كلها حروف بس يعني مفيهاش أرقام أو رموز
              if word.isalpha():
                  words.append(word)
              else:
                  print(f"Warning: Skipped invalid word '{word}' at line {line_num}.")
                  continue
 
-    # هنا ل الملف مش موجود اصلا هيطبع الرساله اللي موجوده دي بعد كده بيرجع set اللي هي مجموعه فاضيه ومش هيكمل الكود
     except FileNotFoundError:
         print(f"Error: File '{file_path}' not found.")
         return set()
@@ -64,18 +52,14 @@ def get_neighbors(word, words):
 
 
 def bfs_word_ladder(start, goal, words):
-
-    #هنشوف لو القاموس كان فاضي او فيه كلام قليل جدا
     if len(words) < 2:
         print("Error: The dictionary is too small or empty to perform the word ladder.")
         return []
 
-    # هنا بنشوف لو الهدف موجود اصلا في القاموس ولا لا
     if goal not in words:
         print(f"Error: The goal word '{goal}' is not in the dictionary.")
         return []
 
-        # هنا هنشوف لو طول الكلمتين متساوي ولا لا
     if len(start) != len(goal):
         print("Error: The start and goal words must have the same length.")
         return []
@@ -106,7 +90,6 @@ def bfs_word_ladder(start, goal, words):
                 # Add the new path to the queue
                 queue.append(new_path)
 
-        # لو مفيش Path أو Ladder بين الكلمتين
     print(f"Error: No word ladder found between '{start}' and '{goal}'.")
     return []
 
@@ -115,7 +98,6 @@ def bfs_word_ladder(start, goal, words):
 file_path = "wordList.txt"
 word_list = dictionary(file_path, length=4)
 
-#هنا بيتاكد ان القاموس اتحمل فعلا ولو في مشكله في تحميله او هو مفيهوش حاجه هيوقف البرنامج ومش هيكمل
 if not word_list:
     print("Error: Dictionary could not be loaded or is empty.")
     exit()
@@ -182,7 +164,6 @@ def bfs_word_ladder(start, goal, words):
 
 # ---------- GUI Functions ----------
 def solve_word_ladder():
-    # مسار ثابت للملف
     file_path = "wordList.txt"
     start = entry_start.get().strip().lower()
     goal = entry_goal.get().strip().lower()
